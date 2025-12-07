@@ -243,9 +243,3 @@
 - Hva kan delegeres?
 
 ---
-
-## IMPLEMENTERINGSTIPS
-
-
-
----
