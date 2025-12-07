@@ -118,7 +118,7 @@
 
 ---
 
-## 3. KUNNSKAPSHÅNDTERING
+## 3. Kunnskapshåndtering
 
 ### Dokumenter innsikt (15 min)
 - Logg viktige læringspunkter fra møter/samtaler
@@ -152,7 +152,7 @@
 
 ---
 
-## 4. PÅVIRKNINGSBLOKKER
+## 4. Kommunikasjon og møter
 
 ### Stakeholder-kartlegging og -strategi (45 min)
 
@@ -193,7 +193,7 @@
 
 ---
 
-## 5. SYSTEMVEDLIKEHOLD
+## 5. Systemvedlikehold
 
 ### Tomt innboks (30 min)
 - Prosesser e-post til null
