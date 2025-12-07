@@ -1,4 +1,4 @@
-# DITT OPERATIVE SYSTEM
+# Ditt Arbeids-operativsystem
 <details>
   <summary>Bruksanvisning: Når skal jeg bruke hvilken blokk?</summary>
   
