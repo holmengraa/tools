@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hvilken blokk skal jeg bruke?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f7fa;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #2d3748;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header-emoji {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .category-title {
+            color: #5a67d8;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .option {
+            background: #f7fafc;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #2d3748;
+        }
+
+        .option:hover {
+            background: #edf2f7;
+            border-left-color: #5a67d8;
+            transform: translateX(4px);
+        }
+
+        .option.active {
+            background: #ebf4ff;
+            border-left-color: #5a67d8;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.2s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s;
+            max-height: 85vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideIn {
+            from { 
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 24px 30px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .modal-header h2 {
+            font-size: 22px;
+            margin: 0;
+        }
+
+        .close {
+            color: white;
+            font-size: 32px;
+            font-weight: 300;
+            cursor: pointer;
+            line-height: 1;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+
+        .close:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .block-description {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            border-left: 4px solid #667eea;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .duration-badge {
+            display: inline-block;
+            background: #edf2f7;
+            color: #2d3748;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .block-section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            color: #667eea;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .block-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .block-section li {
+            padding: 10px 0 10px 28px;
+            position: relative;
+            color: #2d3748;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .block-section li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .modal-footer {
+            padding: 20px 30px;
+            border-top: 1px solid #e2e8f0;
+            background: #f7fafc;
+        }
+
+        .start-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+                max-height: 80vh;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-emoji">🧭</div>
+            <h1>Hvilken blokk skal jeg bruke?</h1>
+        </div>
+
+        <div class="grid">
+            <!-- Hvis du føler deg -->
+            <div class="category-card">
+                <div class="category-title">😰 Hvis du føler deg...</div>
+                <div class="option" onclick="showBlock('klarhet')">
+                    😰 Overvelmet/usikker
+                </div>
+                <div class="option" onclick="showBlock('læring')">
+                    🌫️ Mister oversikten
+                </div>
+                <div class="option" onclick="showBlock('justert')">
+                    ❌ Jobber hardt men feil ting
+                </div>
+                <div class="option" onclick="showBlock('energi')">
+                    🔋 Energiløs/utbrent
+                </div>
+            </div>
+
+            <!-- Hvis du har -->
+            <div class="category-card">
+                <div class="category-title">📊 Hvis du har...</div>
+                <div class="option" onclick="showBlock('strategisk')">
+                    🧠 Komplekst strategisk spørsmål
+                </div>
+                <div class="option" onclick="showBlock('produkt')">
+                    📊 Rapport/presentasjon å levere
+                </div>
+                <div class="option" onclick="showBlock('oppgaver')">
+                    🔗 Mange småting som henger
+                </div>
+                <div class="option" onclick="showBlock('møtestrategi')">
+                    💡 Viktig møte i morgen
+                </div>
+            </div>
+
+            <!-- Hvis du trenger -->
+            <div class="category-card">
+                <div class="category-title">💡 Hvis du trenger...</div>
+                <div class="option" onclick="showBlock('forståelse')">
+                    📈 Forstå hva som skjer i bransjen
+                </div>
+                <div class="option" onclick="showBlock('innsikt')">
+                    💡 Koble innsikter til handling
+                </div>
+                <div class="option" onclick="showBlock('dokumenter')">
+                    🗂️ Huske hva du lærte
+                </div>
+                <div class="option" onclick="showBlock('nettverk')">
+                    💼 Styrke relasjoner
+                </div>
+            </div>
+
+            <!-- Hvis systemet ditt -->
+            <div class="category-card">
+                <div class="category-title">⚙️ Hvis systemet ditt...</div>
+                <div class="option" onclick="showBlock('inbox')">
+                    📧 Inbox eksploderer
+                </div>
+                <div class="option" onclick="showBlock('oversikt')">
+                    📋 Taskboard er kaos
+                </div>
+                <div class="option" onclick="showBlock('optimalisert')">
+                    ⏱️ Ting tar for lang tid
+                </div>
+            </div>
+
+            <!-- Hvis du skal -->
+            <div class="category-card">
+                <div class="category-title">🎯 Hvis du skal...</div>
+                <div class="option" onclick="showBlock('fokus')">
+                    💡 Si ja til noe nytt
+                </div>
+                <div class="option" onclick="showBlock('kapasitet')">
+                    📉 Redusere arbeidsmengde
+                </div>
+                <div class="option" onclick="showBlock('buffer')">
+                    🔄 Bytte mellom vidt forskjellige oppgaver
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="blockModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer">
+                <button class="start-btn" onclick="startBlock()">🚀 Start denne blokken</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const blockInfo = {
+            'klarhet': {
+                title: 'Klarhet i ukens prioriteringer',
+                description: 'Få oversikt og klarhet i hva som er viktigst denne uken',
+                duration: '30 min',
+                before: [
+                    'Ta frem din ukesplanlegging-mal',
+                    'Ha oversikt over dine pågående prosjekter',
+                    'Gjør deg klar til å være ærlig om hva som virkelig betyr noe'
+                ],
+                during: [
+                    'Hva er de 3 viktigste tingene å oppnå denne uken?',
+                    'Hvilke møter/aktiviteter støtter disse? Hvilke kan kuttes?',
+                    'Allokér nødvendige arbeidsblokker i kalenderen NÅ'
+                ],
+                after: [
+                    'Oppdater kalenderen med fokusblokker',
+                    'Send avlysninger for møter som ikke støtter prioriteringene',
+                    'Del prioriteringene med relevante stakeholders'
+                ]
+            },
+            'læring': {
+                title: 'Læring og kursjustering',
+                description: 'Reflekter over hva som fungerte og juster kursen',
+                duration: '20 min',
+                before: [
+                    'Samle notater fra uken som har gått',
+                    'Ha din forrige ukesplanlegging klar'
+                ],
+                during: [
+                    'Hva flyttet nåla? Hva var støy?',
+                    'Hva lærte jeg som endrer neste ukes prioriteringer?',
+                    'Én ting å slutte med, én ting å starte med'
+                ],
+                after: [
+                    'Dokumenter læringen i ditt system',
+                    'Oppdater neste ukes prioriteringer basert på innsiktene'
+                ]
+            },
+            'justert': {
+                title: 'Justert retning og fokus',
+                description: 'Månedlig gjennomgang av strategisk retning',
+                duration: '90 min (månedlig)',
+                before: [
+                    'Samle data på hva du har jobbet med siste måned',
+                    'Ha organisasjonens prioriteringer tilgjengelig',
+                    'Blokker 90 minutter uforstyrret tid'
+                ],
+                during: [
+                    'Stemmer mine prioriteringer med organisasjonens viktigste behov?',
+                    'Hvor skaper jeg mest verdi? Hvor minst?',
+                    'Justér fokusområder for neste måned'
+                ],
+                after: [
+                    'Oppdater dine strategiske prioriteringer',
+                    'Kommuniser endringer til nøkkel-stakeholders',
+                    'Planlegg hvordan du skal allokere tid fremover'
+                ]
+            },
+            'energi': {
+                title: 'Resatt energi',
+                description: 'Ta en pause og lad opp',
+                duration: '20 min',
+                before: [
+                    'Steng alle skjermer',
+                    'Informer teamet at du er utilgjengelig'
+                ],
+                during: [
+                    'Gå en tur uten telefon',
+                    'Ingen skjermer',
+                    'Bare tenke, resette, og puste',
+                    'Observer omgivelsene dine'
+                ],
+                after: [
+                    'Kom tilbake med friskt hode',
+                    'Klar for neste fokusblokk'
+                ]
+            },
+            'strategisk': {
+                title: 'Besvart strategisk spørsmål',
+                description: 'Dyp analyse av komplekst strategisk spørsmål',
+                duration: '2 timer',
+                before: [
+                    'Definer det strategiske spørsmålet du skal besvare',
+                    'Samle alle nødvendige data/dokumenter på forhånd',
+                    'Slå av alle varsler, steng e-post og Slack'
+                ],
+                during: [
+                    'Start med å skrive ned kjernespørsmålet øverst',
+                    'Bruk første 15 min på å strukturere tilnærmingen',
+                    'Arbeid gjennom én del av gangen - ikke hopp mellom',
+                    'Skriv mens du tenker - tvinger klarhet',
+                    'Når du setter deg fast: Ta 5 min pause, gå en runde'
+                ],
+                after: [
+                    'Oppsummer hovedkonklusjonen i én setning',
+                    'Skriv ned neste steg eller åpne spørsmål',
+                    'Planlegg eventuell neste analyseseksjon hvis nødvendig'
+                ]
+            },
+            'produkt': {
+                title: 'Lag ferdig et produkt',
+                description: 'Produser en presentasjon, rapport eller annet deliverable',
+                duration: '2 timer',
+                before: [
+                    'Definer eksakt hva som skal være ferdig når blokken er over',
+                    'Lag en rask disposisjon/struktur',
+                    'Samle alt materiale du trenger',
+                    'Sett opp malen/dokumentet klart'
+                ],
+                during: [
+                    'Start med den vanskeligste delen først',
+                    'Skriv/produser i én gjennomgang - ikke perfeksjonér underveis',
+                    'Lag placeholder for ting du må sjekke senere [FINN DATA]',
+                    'Bruk timer: 50 min produksjon → 10 min pause → 50 min produksjon'
+                ],
+                after: [
+                    'Gjør én rask gjennomgang for kvalitetssikring',
+                    'Marker hva som mangler (hvis noe)',
+                    'Send/publiser hvis ferdig, eller planlegg ferdigstilling',
+                    'Logg hva som tok lengre tid enn forventet'
+                ]
+            },
+            'oppgaver': {
+                title: 'Se over oppgaver og løse tråder',
+                description: 'Rask gjennomgang og lukking av oppgaver',
+                duration: '45 min',
+                before: [
+                    'List opp 5-8 oppgaver som kan lukkes',
+                    'Sorter etter: hva som gir mest verdi + minst mental friksjon',
+                    'Samle alt du trenger for hver oppgave på forhånd'
+                ],
+                during: [
+                    'Jobb i rekkefølge - ikke hopp rundt',
+                    'Sett maks 7 min per oppgave - hvis lengre, flytt til annen blokk',
+                    'Hver oppgave må ende med: Gjort, Delegert, eller Planlagt',
+                    'Hold momentum - ikke research eller gruble, bare ship'
+                ],
+                after: [
+                    'Strek over det som er gjort',
+                    'Flytt det som ikke ble gjort tilbake til backlog',
+                    'Hvis mange oppgaver tok lengre enn 7 min: De var ikke "raske oppgaver"'
+                ]
+            },
+            'møtestrategi': {
+                title: 'Klar møtestrategi',
+                description: 'Forbered deg grundig før viktige møter',
+                duration: '20 min',
+                before: [
+                    'Ha møteagenda tilgjengelig',
+                    'Kjenn til deltakerne',
+                    'Definer ditt mål med møtet'
+                ],
+                during: [
+                    'Hva vil jeg at de skal tenke/føle/gjøre etterpå?',
+                    'Hva er deres perspektiv/bekymringer?',
+                    'Hvilke data/historier trenger jeg?',
+                    'Forbered spørsmål og svar'
+                ],
+                after: [
+                    'Gjennomgå strategien én gang til',
+                    'Visualiser suksess',
+                    'Klar til møtet'
+                ]
+            },
+            'forståelse': {
+                title: 'Skarpere strategisk forståelse',
+                description: 'Research og læring for strategisk skarphet',
+                duration: '60 min',
+                before: [
+                    'Velg ett fokusområde: bransjetrender, konkurrenter, eller faglig utvikling',
+                    'Samle 3-5 relevante kilder',
+                    'Forbered notatverktøy for å fange innsikter'
+                ],
+                during: [
+                    'Les/lytt aktivt - noter implikasjoner for din organisasjon',
+                    'Still spørsmål underveis: "Hva betyr dette for oss?"',
+                    'Identifiser konkrete signals: nye spillere, teknologiskifter',
+                    'Koble innsikter til pågående strategiske initiativ'
+                ],
+                after: [
+                    'Oppsummer 2-3 hovedtakeaways',
+                    'Identifiser én aksjonerbar innsikt',
+                    'Legg til relevante emner i neste lesekø'
+                ]
+            },
+            'innsikt': {
+                title: 'Aksjonerbar innsikt',
+                description: 'Koble sammen læring til konkrete handlinger',
+                duration: '30 min',
+                before: [
+                    'Samle innsikter fra ulike kilder',
+                    'Ha dine strategiske mål klare'
+                ],
+                during: [
+                    'Koble sammen innsikter fra ulike kilder',
+                    'Lag egne perspektiver/hypoteser',
+                    'Identifiser konkrete implikasjoner',
+                    'Forbered til å dele med andre'
+                ],
+                after: [
+                    'Dokumenter hypotesen',
+                    'Del med relevante personer',
+                    'Planlegg validering'
+                ]
+            },
+            'dokumenter': {
+                title: 'Dokumenter innsikt',
+                description: 'Logg viktig læring for fremtidig bruk',
+                duration: '15 min',
+                before: [
+                    'Ha ditt notatsystem klart',
+                    'Samle tanker fra dagens møter/arbeid'
+                ],
+                during: [
+                    'Logg viktige læringspunkter fra møter/samtaler',
+                    'Oppdater dine tankekart/notater',
+                    'Identifiser mønstre på tvers av prosjekter',
+                    'Bruk tagger for lett søk senere'
+                ],
+                after: [
+                    'Strukturerte notater du kan søke i senere',
+                    'Koblet til relevante prosjekter/stakeholders'
+                ]
+            },
+            'nettverk': {
+                title: 'Styrket nettverk',
+                description: 'Invester i relasjoner',
+                duration: '30 min',
+                before: [
+                    'Identifiser hvem du vil ha kontakt med',
+                    'Tenk gjennom hva du kan dele/bidra med'
+                ],
+                during: [
+                    'Kaffesamtaler med nøkkelpersoner',
+                    'Dele innsikter som hjelper andre',
+                    'Bygge broer på tvers',
+                    'Lytt mer enn du snakker'
+                ],
+                after: [
+                    'Følg opp med kort melding',
+                    'Dokumenter viktige punkter',
+                    'Planlegg neste kontaktpunkt'
+                ]
+            },
+            'inbox': {
+                title: 'Tomt innboks',
+                description: 'Prosesser e-post til null',
+                duration: '30 min',
+                before: [
+                    'Sett av uforstyrret tid',
+                    'Ha klare kriterier for prioritering'
+                ],
+                during: [
+                    'Prosesser e-post til null',
+                    'Alt blir: Gjort, delegert, planlagt, eller slettet',
+                    'Bruk 2-minutters regel: hvis det tar under 2 min, gjør det nå',
+                    'Ingen e-post skal leses to ganger'
+                ],
+                after: [
+                    'Inbox på null',
+                    'Alle actions planlagt eller delegert',
+                    'Kjør maks 1-2 ganger per dag'
+                ]
+            },
+            'oversikt': {
+                title: 'Oppdatert oversikt',
+                description: 'Rydd opp i taskboard og prosjektstatus',
+                duration: '15 min',
+                before: [
+                    'Åpne ditt taskboard/prosjektverktøy'
+                ],
+                during: [
+                    'Oppdater prosjektstatus',
+                    'Lukk fullførte oppgaver',
+                    'Reprioritér backlog',
+                    'Flytt stuck items til "trenger hjelp"'
+                ],
+                after: [
+                    'Klar oversikt over status',
+                    'Alle vet hva de skal jobbe med',
+                    'Kjør daglig eller hver 2. dag'
+                ]
+            },
+            'optimalisert': {
+                title: 'Optimalisert arbeidssystem',
+                description: 'Månedlig gjennomgang av verktøy og prosesser',
+                duration: '45 min (månedlig)',
+                before: [
+                    'Samle data på tidsbruk siste måned',
+                    'Identifiser frustrasjoner'
+                ],
+                during: [
+                    'Funker mine verktøy og prosesser?',
+                    'Hva tar unødvendig tid?',
+                    'Hva kan automatiseres/forenkles?',
+                    'Hvilke møter kan droppes permanent?'
+                ],
+                after: [
+                    'Implementer 1-3 konkrete forbedringer',
+                    'Dokumenter nye prosesser',
+                    'Følg opp neste måned'
+                ]
+            },
+            'fokus': {
+                title: 'Beskyttet fokus',
+                description: 'Filtrer forespørsler før du sier ja',
+                duration: '5 min',
+                before: [
+                    'Ha dine topp 3 prioriteringer klare'
+                ],
+                during: [
+                    'Er dette i mine topp 3 prioriteringer?',
+                    'Kan bare jeg gjøre dette?',
+                    'Hva må jeg si nei til for å si ja til dette?',
+                    'Default: Nei, med mindre det er åpenbart strategisk viktig'
+                ],
+                after: [
+                    'Kommuniser beslutningen tydelig',
+                    'Foreslå alternativer hvis du sier nei'
+                ]
+            },
+            'kapasitet': {
+                title: 'Frigjort kapasitet',
+                description: 'Ukentlig gjennomgang av commitments',
+                duration: '15 min',
+                before: [
+                    'Ha oversikt over alle dine commitments'
+                ],
+                during: [
+                    'Hva har jeg committet til som jeg bør trekke meg fra?',
+                    'Hvilke møter kan jeg droppe?',
+                    'Hva kan delegeres?',
+                    'Hvor lekker tiden min?'
+                ],
+                after: [
+                    'Send avmeldinger/delegeringer',
+                    'Blokker frigjort tid til viktigere ting',
+                    'Kjør ukentlig'
+                ]
+            },
+            'buffer': {
+                title: 'Mentalt frisk start',
+                description: 'Buffer mellom forskjellige oppgaver',
+                duration: '10 min',
+                before: [
+                    'Avslutt forrige oppgave mentalt'
+                ],
+                during: [
+                    'Lukk alle tabs/dokumenter fra forrige oppgave',
+                    'Ta 5 dype pust',
+                    'Stå opp, strekk deg',
+                    'Visualiser neste oppgave'
+                ],
+                after: [
+                    'Bedre fokus på neste blokk',
+                    'Mindre mental overføring'
+                ]
+            }
+        };
+
+        function showBlock(blockId) {
+            const info = blockInfo[blockId];
+            if (!info) return;
+
+            // Remove active class from all options
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('active'));
+            
+            // Add active class to clicked option
+            event.currentTarget.classList.add('active');
+
+            document.getElementById('modalTitle').textContent = info.title;
+            
+            let bodyHTML = `
+                <div class="block-description">${info.description}</div>
+                <div class="duration-badge">⏱️ ${info.duration}</div>
+            `;
+
+            if (info.before && info.before.length > 0) {
+                bodyHTML += `
+                    <div class="block-section">
+                        <div class="section-title">📋 Før du starter:</div>
+                        <ul>
+                            ${info.before.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            if (info.during && info.during.length > 0) {
+                bodyHTML += `
+                    <div class="block-section">
+                        <div class="section-title">⚡ Arbeidsmodus:</div>
+                        <ul>
+                            ${info.during.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            if (info.after && info.after.length > 0) {
+                bodyHTML += `
+                    <div class="block-section">
+                        <div class="section-title">✅ Før du avslutter:</div>
+                        <ul>
+                            ${info.after.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            document.getElementById('modalBody').innerHTML = bodyHTML;
+            document.getElementById('blockModal').style.display = 'block';
+            
+            // Store current block for start button
+            window.currentBlock = info.title;
+        }
+
+        function closeModal() {
+            document.getElementById('blockModal').style.display = 'none';
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('active'));
+        }
+
+        function startBlock() {
+            alert(`🚀 ${window.currentBlock} startet!\n\nSlå av varsler og fokuser helt på denne blokken.`);
+            closeModal();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('blockModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+
+        // Close modal with ESC key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
