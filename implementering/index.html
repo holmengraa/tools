@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP-implementering – SharePoint-mockup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f3f2f1;
+            color: #323130;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        /* SharePoint Header */
+        .sp-header {
+            background: #0078d4;
+            color: white;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .sp-header-logo {
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .sp-header-search {
+            flex: 1;
+            max-width: 400px;
+        }
+        
+        .sp-header-search input {
+            width: 100%;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        /* Navigation */
+        .sp-nav {
+            background: white;
+            border-bottom: 1px solid #edebe9;
+            padding: 0 24px;
+            display: flex;
+            gap: 4px;
+        }
+        
+        .sp-nav-item {
+            padding: 14px 16px;
+            cursor: pointer;
+            position: relative;
+            color: #323130;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s ease;
+        }
+        
+        .sp-nav-item:hover {
+            background: #f3f2f1;
+        }
+        
+        .sp-nav-item.active {
+            border-bottom-color: #0078d4;
+            color: #0078d4;
+        }
+        
+        /* Main content */
+        .sp-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        /* Hero section */
+        .hero {
+            background: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .hero p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .hero-status {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            background: rgba(255,255,255,0.2);
+            padding: 12px 20px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .hero-status-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .hero-status-value {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        /* Progress bar */
+        .progress-section {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .progress-section h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #323130;
+        }
+        
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #edebe9;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+        
+        .timeline-progress {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 25%;
+            height: 4px;
+            background: #0078d4;
+            transform: translateY(-50%);
+            z-index: 2;
+            transition: width 0.3s ease;
+        }
+        
+        .timeline-item {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .timeline-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #edebe9;
+            border: 3px solid white;
+            margin: 0 auto 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-item.completed .timeline-dot {
+            background: #107c10;
+        }
+        
+        .timeline-item.active .timeline-dot {
+            background: #0078d4;
+            transform: scale(1.2);
+        }
+        
+        .timeline-item.upcoming .timeline-dot {
+            background: #c8c6c4;
+        }
+        
+        .timeline-label {
+            font-size: 12px;
+            color: #605e5c;
+            max-width: 100px;
+        }
+        
+        .timeline-date {
+            font-size: 11px;
+            color: #a19f9d;
+            margin-top: 4px;
+        }
+        
+        .timeline-item:hover .timeline-dot {
+            transform: scale(1.3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        /* Grid layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .grid-2 {
+            grid-template-columns: 2fr 1fr;
+        }
+        
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #edebe9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .card-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #323130;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 12px;
+        }
+        
+        /* Phase cards */
+        .phase-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .phase-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+            position: relative;
+        }
+        
+        .phase-card:hover {
+            border-color: #0078d4;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        
+        .phase-card.completed {
+            border-left: 4px solid #107c10;
+        }
+        
+        .phase-card.active {
+            border-left: 4px solid #0078d4;
+            background: #f0f6ff;
+        }
+        
+        .phase-card.upcoming {
+            border-left: 4px solid #c8c6c4;
+        }
+        
+        .phase-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #0078d4;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin: 0 auto 12px;
+            font-size: 14px;
+        }
+        
+        .phase-card.completed .phase-number {
+            background: #107c10;
+        }
+        
+        .phase-card.upcoming .phase-number {
+            background: #c8c6c4;
+        }
+        
+        .phase-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 4px;
+        }
+        
+        .phase-period {
+            font-size: 11px;
+            color: #605e5c;
+        }
+        
+        .phase-status {
+            margin-top: 12px;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        
+        .phase-status.completed {
+            background: #dff6dd;
+            color: #107c10;
+        }
+        
+        .phase-status.active {
+            background: #deecf9;
+            color: #0078d4;
+        }
+        
+        .phase-status.upcoming {
+            background: #f3f2f1;
+            color: #605e5c;
+        }
+        
+        /* List items */
+        .list-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #edebe9;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .list-item:hover {
+            background: #f3f2f1;
+        }
+        
+        .list-item-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        .list-item-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .list-item-title {
+            font-weight: 500;
+            color: #323130;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .list-item-meta {
+            font-size: 12px;
+            color: #605e5c;
+        }
+        
+        .list-item-status {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-green {
+            background: #dff6dd;
+            color: #107c10;
+        }
+        
+        .status-blue {
+            background: #deecf9;
+            color: #0078d4;
+        }
+        
+        .status-yellow {
+            background: #fff4ce;
+            color: #8a8886;
+        }
+        
+        .status-red {
+            background: #fde7e9;
+            color: #d13438;
+        }
+        
+        .status-gray {
+            background: #f3f2f1;
+            color: #605e5c;
+        }
+        
+        /* Quick links */
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        
+        .quick-link {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #edebe9;
+        }
+        
+        .quick-link:hover {
+            border-color: #0078d4;
+            background: #f0f6ff;
+        }
+        
+        .quick-link-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .quick-link-text {
+            font-weight: 500;
+            color: #323130;
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: #323130;
+            color: white;
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            max-width: 350px;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        
+        .tooltip.visible {
+            opacity: 1;
+        }
+        
+        .tooltip-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        
+        .tooltip-content {
+            line-height: 1.6;
+            color: #e1dfdd;
+        }
+        
+        .tooltip-content ul {
+            margin-top: 8px;
+            margin-left: 16px;
+        }
+        
+        .tooltip-content li {
+            margin-bottom: 4px;
+        }
+        
+        .tooltip-meta {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #605e5c;
+            font-size: 12px;
+            color: #a19f9d;
+        }
+        
+        /* Section headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #323130;
+        }
+        
+        .section-link {
+            color: #0078d4;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .section-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Icon backgrounds */
+        .bg-blue { background: #deecf9; color: #0078d4; }
+        .bg-green { background: #dff6dd; color: #107c10; }
+        .bg-yellow { background: #fff4ce; color: #8a6914; }
+        .bg-red { background: #fde7e9; color: #d13438; }
+        .bg-purple { background: #e8daef; color: #8764b8; }
+        .bg-orange { background: #fed9cc; color: #ca5010; }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .phase-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .phase-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .quick-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SharePoint Header -->
+    <header class="sp-header">
+        <div class="sp-header-logo">
+            <span>☰</span>
+            <span>ERP-implementering</span>
+        </div>
+        <div class="sp-header-search">
+            <input type="text" placeholder="Søk i prosjektområdet...">
+        </div>
+    </header>
+    
+    <!-- Navigation -->
+    <nav class="sp-nav">
+        <a href="#" class="sp-nav-item active" data-tooltip="nav-home">Hjem</a>
+        <a href="#" class="sp-nav-item" data-tooltip="nav-styring">Prosjektstyring</a>
+        <a href="#" class="sp-nav-item" data-tooltip="nav-faser">Faser ▾</a>
+        <a href="#" class="sp-nav-item" data-tooltip="nav-leveranser">Leveranser</a>
+        <a href="#" class="sp-nav-item" data-tooltip="nav-prosesser">Prosesser ▾</a>
+        <a href="#" class="sp-nav-item" data-tooltip="nav-ressurser">Ressurser</a>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="sp-content">
+        <!-- Hero Section -->
+        <section class="hero" data-tooltip="hero">
+            <h1>ERP-implementering 2025</h1>
+            <p>Innføring av nye arbeidsprosesser og systemstøtte • Januar–November 2025</p>
+            <div class="hero-status">
+                <div class="hero-status-label">Prosjektstatus</div>
+                <div class="hero-status-value">● Grønn</div>
+            </div>
+        </section>
+        
+        <!-- Phase Cards -->
+        <div class="section-header">
+            <h2 class="section-title">Faser</h2>
+            <a href="#" class="section-link">Se detaljert plan →</a>
+        </div>
+        
+        <div class="phase-grid">
+            <div class="phase-card completed" data-tooltip="phase-1">
+                <div class="phase-number">1</div>
+                <div class="phase-title">Forberedelse</div>
+                <div class="phase-period">Jan–Feb</div>
+                <div class="phase-status completed">✓ Fullført</div>
+            </div>
+            <div class="phase-card active" data-tooltip="phase-2">
+                <div class="phase-number">2</div>
+                <div class="phase-title">Kartlegging</div>
+                <div class="phase-period">Feb–Mar</div>
+                <div class="phase-status active">● Pågår</div>
+            </div>
+            <div class="phase-card upcoming" data-tooltip="phase-3">
+                <div class="phase-number">3</div>
+                <div class="phase-title">Design og konfigurasjon</div>
+                <div class="phase-period">Mar–Mai</div>
+                <div class="phase-status upcoming">○ Kommende</div>
+            </div>
+            <div class="phase-card upcoming" data-tooltip="phase-4">
+                <div class="phase-number">4</div>
+                <div class="phase-title">Test</div>
+                <div class="phase-period">Mai–Jul</div>
+                <div class="phase-status upcoming">○ Kommende</div>
+            </div>
+            <div class="phase-card upcoming" data-tooltip="phase-5">
+                <div class="phase-number">5</div>
+                <div class="phase-title">Opplæring</div>
+                <div class="phase-period">Aug–Okt</div>
+                <div class="phase-status upcoming">○ Kommende</div>
+            </div>
+            <div class="phase-card upcoming" data-tooltip="phase-6">
+                <div class="phase-number">6</div>
+                <div class="phase-title">Go-live</div>
+                <div class="phase-period">Nov</div>
+                <div class="phase-status upcoming">○ Kommende</div>
+            </div>
+        </div>
+        
+        <!-- Milestone Timeline -->
+        <section class="progress-section" data-tooltip="timeline">
+            <h2>Milepæler</h2>
+            <div class="timeline">
+                <div class="timeline-progress"></div>
+                <div class="timeline-item completed" data-tooltip="m1">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-label">M1: Prosjekt etablert</div>
+                    <div class="timeline-date">31. jan ✓</div>
+                </div>
+                <div class="timeline-item active" data-tooltip="m2">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-label">M2: Kartlegging fullført</div>
+                    <div class="timeline-date">15. mar</div>
+                </div>
+                <div class="timeline-item upcoming" data-tooltip="m3">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-label">M3: Design godkjent</div>
+                    <div class="timeline-date">30. apr</div>
+                </div>
+                <div class="timeline-item upcoming" data-tooltip="m4">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-label">M4: Konfigurasjon ferdig</div>
+                    <div class="timeline-date">31. mai</div>
+                </div>
+                <div class="timeline-item upcoming" data-tooltip="m5">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-label">M5: Test godkjent</div>
+                    <div class="timeline-date">15. jul</div>
+                </div>
+                <div class="timeline-item upcoming" data-tooltip="m6">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-label">M6: Opplæring gjennomført</div>
+                    <div class="timeline-date">31. okt</div>
+                </div>
+                <div class="timeline-item upcoming" data-tooltip="m7">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-label">M7: Go-live</div>
+                    <div class="timeline-date">1. nov</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Grid Section -->
+        <div class="grid grid-2">
+            <!-- Activities -->
+            <div class="card" data-tooltip="activities">
+                <div class="card-header">
+                    <h3>Aktiviteter i fokus</h3>
+                    <a href="#" class="section-link">Se alle →</a>
+                </div>
+                <div class="card-body" style="padding: 0;">
+                    <div class="list-item" data-tooltip="activity-1">
+                        <div class="list-item-icon bg-blue">📋</div>
+                        <div class="list-item-content">
+                            <div class="list-item-title">Kartlegge konteringspraksis</div>
+                            <div class="list-item-meta">Fase 2 • Ansvarlig: Økonomi</div>
+                        </div>
+                        <div class="list-item-status status-blue">Pågår</div>
+                    </div>
+                    <div class="list-item" data-tooltip="activity-2">
+                        <div class="list-item-icon bg-blue">📋</div>
+                        <div class="list-item-content">
+                            <div class="list-item-title">Intervjuer innkjøpsprosess</div>
+                            <div class="list-item-meta">Fase 2 • Ansvarlig: Anskaffelse</div>
+                        </div>
+                        <div class="list-item-status status-blue">Pågår</div>
+                    </div>
+                    <div class="list-item" data-tooltip="activity-3">
+                        <div class="list-item-icon bg-yellow">📋</div>
+                        <div class="list-item-content">
+                            <div class="list-item-title">Gap-analyse kontering</div>
+                            <div class="list-item-meta">Fase 2 • Frist: 10. mar</div>
+                        </div>
+                        <div class="list-item-status status-yellow">Ikke startet</div>
+                    </div>
+                    <div class="list-item" data-tooltip="activity-4">
+                        <div class="list-item-icon bg-green">📋</div>
+                        <div class="list-item-content">
+                            <div class="list-item-title">Prioritere prosessområder</div>
+                            <div class="list-item-meta">Fase 2 • Fullført 20. feb</div>
+                        </div>
+                        <div class="list-item-status status-green">Fullført</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Risks -->
+            <div class="card" data-tooltip="risks">
+                <div class="card-header">
+                    <h3>Åpne risikoer</h3>
+                    <a href="#" class="section-link">Risikoregister →</a>
+                </div>
+                <div class="card-body" style="padding: 0;">
+                    <div class="list-item" data-tooltip="risk-1">
+                        <div class="list-item-icon bg-red">⚠️</div>
+                        <div class="list-item-content">
+                            <div class="list-item-title">Ressurskapasitet test</div>
+                            <div class="list-item-meta">Sannsynlighet: Høy</div>
+                        </div>
+                        <div class="list-item-status status-red">Høy</div>
+                    </div>
+                    <div class="list-item" data-tooltip="risk-2">
+                        <div class="list-item-icon bg-yellow">⚠️</div>
+                        <div class="list-item-content">
+                            <div class="list-item-title">Variasjon i praksis</div>
+                            <div class="list-item-meta">Sannsynlighet: Middels</div>
+                        </div>
+                        <div class="list-item-status status-yellow">Middels</div>
+                    </div>
+                    <div class="list-item" data-tooltip="risk-3">
+                        <div class="list-item-icon bg-yellow">⚠️</div>
+                        <div class="list-item-content">
+                            <div class="list-item-title">Integrasjon mot HR</div>
+                            <div class="list-item-meta">Sannsynlighet: Middels</div>
+                        </div>
+                        <div class="list-item-status status-yellow">Middels</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Second Grid -->
+        <div class="grid">
+            <!-- Deliverables -->
+            <div class="card" data-tooltip="deliverables">
+                <div class="card-header">
+                    <h3>Leveranser</h3>
+                    <a href="#" class="section-link">Alle →</a>
+                </div>
+                <div class="card-body" style="padding: 0;">
+                    <div class="list-item" data-tooltip="deliverable-1">
+                        <div class="list-item-icon bg-green">📄</div>
+                        <div class="list-item-content">
+                            <div class="list-item-title">Prosjektplan</div>
+                            <div class="list-item-meta">Fase 1</div>
+                        </div>
+                        <div class="list-item-status status-green">Godkjent</div>
+                    </div>
+                    <div class="list-item" data-tooltip="deliverable-2">
+                        <div class="list-item-icon bg-blue">📄</div>
+                        <div class="list-item-content">
+                            <div class="list-item-title">Kartleggingsrapport kontering</div>
+                            <div class="list-item-meta">Fase 2</div>
+                        </div>
+                        <div class="list-item-status status-blue">Under arbeid</div>
+                    </div>
+                    <div class="list-item" data-tooltip="deliverable-3">
+                        <div class="list-item-icon bg-purple">📄</div>
+                        <div class="list-item-content">
+                            <div class="list-item-title">Gap-analyse</div>
+                            <div class="list-item-meta">Fase 2</div>
+                        </div>
+                        <div class="list-item-status status-gray">Planlagt</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Decisions -->
+            <div class="card" data-tooltip="decisions">
+                <div class="card-header">
+                    <h3>Siste beslutninger</h3>
+                    <a href="#" class="section-link">Beslutningslogg →</a>
+                </div>
+                <div class="card-body" style="padding: 0;">
+                    <div class="list-item" data-tooltip="decision-1">
+                        <div class="list-item-icon bg-purple">✓</div>
+                        <div class="list-item-content">
+                            <div class="list-item-title">Go-live dato 1. november</div>
+                            <div class="list-item-meta">Styringsgruppe • 25. jan</div>
+                        </div>
+                    </div>
+                    <div class="list-item" data-tooltip="decision-2">
+                        <div class="list-item-icon bg-purple">✓</div>
+                        <div class="list-item-content">
+                            <div class="list-item-title">Prioriterte prosessområder</div>
+                            <div class="list-item-meta">Prosjektleder • 18. feb</div>
+                        </div>
+                    </div>
+                    <div class="list-item" data-tooltip="decision-3">
+                        <div class="list-item-icon bg-purple">✓</div>
+                        <div class="list-item-content">
+                            <div class="list-item-title">Endringsagenter per enhet</div>
+                            <div class="list-item-meta">Prosjektleder • 15. feb</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Processes -->
+            <div class="card" data-tooltip="processes">
+                <div class="card-header">
+                    <h3>Prosessområder</h3>
+                    <a href="#" class="section-link">Alle →</a>
+                </div>
+                <div class="card-body" style="padding: 0;">
+                    <div class="list-item" data-tooltip="process-1">
+                        <div class="list-item-icon bg-orange">⚙️</div>
+                        <div class="list-item-content">
+                            <div class="list-item-title">Kontering</div>
+                            <div class="list-item-meta">Prioritet 1 • Kartlegging pågår</div>
+                        </div>
+                    </div>
+                    <div class="list-item" data-tooltip="process-2">
+                        <div class="list-item-icon bg-orange">⚙️</div>
+                        <div class="list-item-content">
+                            <div class="list-item-title">Innkjøp og bestilling</div>
+                            <div class="list-item-meta">Prioritet 1 • Kartlegging pågår</div>
+                        </div>
+                    </div>
+                    <div class="list-item" data-tooltip="process-3">
+                        <div class="list-item-icon bg-orange">⚙️</div>
+                        <div class="list-item-content">
+                            <div class="list-item-title">Prosjektoppfølging</div>
+                            <div class="list-item-meta">Prioritet 2 • Ikke startet</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Links -->
+        <div class="section-header">
+            <h2 class="section-title">Hurtiglenker</h2>
+        </div>
+        
+        <div class="quick-links">
+            <div class="quick-link" data-tooltip="link-maler">
+                <div class="quick-link-icon bg-blue">📁</div>
+                <div class="quick-link-text">Maler og skjemaer</div>
+            </div>
+            <div class="quick-link" data-tooltip="link-moter">
+                <div class="quick-link-icon bg-green">📅</div>
+                <div class="quick-link-text">Møter og referater</div>
+            </div>
+            <div class="quick-link" data-tooltip="link-kontakt">
+                <div class="quick-link-icon bg-purple">👥</div>
+                <div class="quick-link-text">Prosjektteam</div>
+            </div>
+            <div class="quick-link" data-tooltip="link-hjelp">
+                <div class="quick-link-icon bg-orange">❓</div>
+                <div class="quick-link-text">Hjelp og veiledning</div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Tooltip -->
+    <div class="tooltip" id="tooltip">
+        <div class="tooltip-title"></div>
+        <div class="tooltip-content"></div>
+        <div class="tooltip-meta"></div>
+    </div>
+    
+    <script>
+        // Tooltip content database
+        const tooltipData = {
+            // Navigation
+            'nav-home': {
+                title: 'Hjem – Startside',
+                content: 'Prosjektets hovedside med oversikt over status, fremdrift og nøkkelinformasjon. Alle brukergrupper starter her.',
+                meta: 'Viser: Dashbord, faseoversikt, milepæler, aktiviteter, risikoer'
+            },
+            'nav-styring': {
+                title: 'Prosjektstyring',
+                content: 'Samler all styrings­informasjon for prosjektledelse og styringsgruppe:<ul><li>Milepælsliste med status</li><li>Risikoregister</li><li>Beslutningslogg</li><li>Møteinnkallinger og referater</li><li>Statusrapporter</li></ul>',
+                meta: 'Målgruppe: Prosjektledelse, styringsgruppe'
+            },
+            'nav-faser': {
+                title: 'Faser',
+                content: 'Detaljert informasjon om hver av de seks prosjektfasene. Hver fase har egen side med:<ul><li>Fasebeskrivelse og formål</li><li>Aktiviteter og ansvarlige</li><li>Leveranser</li><li>Faseressurser og maler</li></ul>',
+                meta: 'Dropdown-meny med direktelenker til hver fase'
+            },
+            'nav-leveranser': {
+                title: 'Leveranser',
+                content: 'Dokumentbibliotek med alle prosjektets leveranser. Metadata inkluderer fase, status, ansvarlig og godkjenner. Filtrering på fase, type og status.',
+                meta: 'Typer: Dokumenter, beslutninger, godkjenninger, konfigurasjoner'
+            },
+            'nav-prosesser': {
+                title: 'Prosesser',
+                content: 'Dedikert område for hvert kartlagt prosessområde:<ul><li>Kontering</li><li>Innkjøp og bestilling</li><li>Prosjektoppfølging</li><li>Reiseregning</li></ul>Inneholder nåsituasjon, variasjonsanalyse, fremtidig prosess og gap-analyse.',
+                meta: 'Dropdown-meny med direktelenker til hver prosess'
+            },
+            'nav-ressurser': {
+                title: 'Ressurser',
+                content: 'Støttemateriell for prosjektdeltakere:<ul><li>Maler for dokumentasjon</li><li>Retningslinjer</li><li>Kontaktinformasjon</li><li>Lenker til opplæringsmateriell</li></ul>',
+                meta: 'Tilgjengelig for alle prosjektdeltakere'
+            },
+            
+            // Hero
+            'hero': {
+                title: 'Prosjektoversikt',
+                content: 'Viser prosjektets overordnede status med trafikklysindikator. Grønn = i rute, Gul = avvik som håndteres, Rød = kritiske avvik. Oppdateres av prosjektleder ukentlig.',
+                meta: 'Klikk for å se detaljert statusrapport'
+            },
+            
+            // Phases
+            'phase-1': {
+                title: 'Fase 1: Forberedelse',
+                content: '<strong>Periode:</strong> Januar–februar<br><strong>Formål:</strong> Etablere prosjektorganisasjon og grunnlag for gjennomføring.<br><br><strong>Hovedaktiviteter:</strong><ul><li>Etablere prosjektorganisasjon</li><li>Konstituere styringsgruppe</li><li>Detaljere prosjektplan</li><li>Etablere kommunikasjonsplan</li><li>Identifisere endringsagenter</li></ul>',
+                meta: '✓ Fullført 28. februar • Milepæl M1 oppnådd'
+            },
+            'phase-2': {
+                title: 'Fase 2: Kartlegging',
+                content: '<strong>Periode:</strong> Februar–mars<br><strong>Formål:</strong> Forstå dagens praksis og identifisere gap mot fremtidig prosess.<br><br><strong>Hovedaktiviteter:</strong><ul><li>Prioritere prosessområder</li><li>Kartlegge dagens praksis</li><li>Identifisere variasjoner</li><li>Gjennomføre gap-analyse</li><li>Vurdere endringsomfang per enhet</li></ul>',
+                meta: '● Pågår • Milepæl M2: 15. mars'
+            },
+            'phase-3': {
+                title: 'Fase 3: Design og konfigurasjon',
+                content: '<strong>Periode:</strong> Mars–mai<br><strong>Formål:</strong> Tilpasse løsningen til organisasjonens behov.<br><br><strong>Hovedaktiviteter:</strong><ul><li>Detaljere fremtidige prosesser</li><li>Beslutte standardisering vs. variasjon</li><li>Konfigurere system</li><li>Utvikle integrasjoner</li><li>Forberede datamigrering</li></ul>',
+                meta: '○ Starter mars • Milepæler M3, M4'
+            },
+            'phase-4': {
+                title: 'Fase 4: Test',
+                content: '<strong>Periode:</strong> Mai–juli<br><strong>Formål:</strong> Kvalitetssikre løsningen før produksjonssetting.<br><br><strong>Hovedaktiviteter:</strong><ul><li>Funksjonstest</li><li>Integrasjonstest</li><li>Brukerakseptansetest (UAT)</li><li>Ytelsestest</li><li>Feilretting og justering</li></ul>',
+                meta: '○ Starter mai • Milepæl M5: Go-live beslutning'
+            },
+            'phase-5': {
+                title: 'Fase 5: Opplæring og endringsstøtte',
+                content: '<strong>Periode:</strong> August–oktober<br><strong>Formål:</strong> Klargjøre organisasjonen for nye arbeidsmåter.<br><br><strong>Hovedaktiviteter:</strong><ul><li>Utvikle opplæringsmateriell</li><li>Trene endringsagenter</li><li>Gjennomføre opplæring</li><li>Kommunikasjonsaktiviteter</li><li>Etablere støtteapparat</li></ul>',
+                meta: '○ Starter august • Milepæl M6: Organisasjonen klar'
+            },
+            'phase-6': {
+                title: 'Fase 6: Go-live og stabilisering',
+                content: '<strong>Periode:</strong> November<br><strong>Formål:</strong> Sette løsningen i produksjon og sikre stabil drift.<br><br><strong>Hovedaktiviteter:</strong><ul><li>Datamigrering</li><li>Go-live 1. november</li><li>Intensiv brukerstøtte</li><li>Overvåking og feilhåndtering</li><li>Overlevering til drift</li></ul>',
+                meta: '○ Go-live 1. november • Milepæler M7, M8'
+            },
+            
+            // Milestones
+            'timeline': {
+                title: 'Milepælsoversikt',
+                content: 'Viser prosjektets åtte hovedmilepæler med status. Grønne punkter er oppnådd, blått er neste milepæl, grå er kommende.',
+                meta: 'Klikk på en milepæl for detaljer'
+            },
+            'm1': {
+                title: 'M1: Prosjekt etablert',
+                content: '<strong>Dato:</strong> 31. januar<br><strong>Status:</strong> ✓ Fullført<br><br><strong>Kriterier:</strong><ul><li>Prosjektorganisasjon på plass</li><li>Plan godkjent av styringsgruppe</li><li>Styringsgruppe konstituert</li><li>Kommunikasjonsplan etablert</li></ul>',
+                meta: 'Godkjent av styringsgruppe 31. januar'
+            },
+            'm2': {
+                title: 'M2: Kartlegging fullført',
+                content: '<strong>Dato:</strong> 15. mars<br><strong>Status:</strong> ● Pågår<br><br><strong>Kriterier:</strong><ul><li>Gap-analyse ferdig for prioriterte prosesser</li><li>Variasjoner dokumentert og kategorisert</li><li>Endringsomfang vurdert per enhet</li><li>Prioritering av endringsstøtte klar</li></ul>',
+                meta: '18 dager igjen • Ansvarlig: Prosessteam'
+            },
+            'm3': {
+                title: 'M3: Design godkjent',
+                content: '<strong>Dato:</strong> 30. april<br><strong>Status:</strong> ○ Kommende<br><br><strong>Kriterier:</strong><ul><li>Fremtidige prosesser dokumentert</li><li>Prosesseiere har godkjent design</li><li>Konfigurasjonsspesifikasjon klar</li><li>Standardiserings­beslutninger tatt</li></ul>',
+                meta: 'Avhenger av M2'
+            },
+            'm4': {
+                title: 'M4: Konfigurasjon ferdig',
+                content: '<strong>Dato:</strong> 31. mai<br><strong>Status:</strong> ○ Kommende<br><br><strong>Kriterier:</strong><ul><li>System konfigurert iht. spesifikasjon</li><li>Integrasjoner utviklet</li><li>Testmiljø etablert</li><li>Klar for testfase</li></ul>',
+                meta: 'Avhenger av M3'
+            },
+            'm5': {
+                title: 'M5: Test godkjent',
+                content: '<strong>Dato:</strong> 15. juli<br><strong>Status:</strong> ○ Kommende<br><br><strong>Kriterier:</strong><ul><li>UAT gjennomført og godkjent</li><li>Kritiske feil rettet</li><li>Ytelseskrav verifisert</li><li>Go-live-beslutning mulig</li></ul>',
+                meta: 'Beslutningspunkt for go-live'
+            },
+            'm6': {
+                title: 'M6: Opplæring gjennomført',
+                content: '<strong>Dato:</strong> 31. oktober<br><strong>Status:</strong> ○ Kommende<br><br><strong>Kriterier:</strong><ul><li>Alle brukergrupper opplært</li><li>Endringsagenter aktive i sine enheter</li><li>Støtteapparat klart</li><li>Organisasjonen klar for go-live</li></ul>',
+                meta: 'Siste milepæl før go-live'
+            },
+            'm7': {
+                title: 'M7: Go-live',
+                content: '<strong>Dato:</strong> 1. november<br><strong>Status:</strong> ○ Kommende<br><br><strong>Kriterier:</strong><ul><li>Data migrert og validert</li><li>System i produksjon</li><li>Brukere arbeider i ny løsning</li><li>Støtteapparat aktivt</li></ul>',
+                meta: 'Produksjonssetting'
+            },
+            
+            // Activities
+            'activities': {
+                title: 'Aktiviteter i fokus',
+                content: 'Viser aktiviteter som krever oppmerksomhet akkurat nå – pågående og kommende aktiviteter med nær frist. Listen filtreres automatisk basert på status og frist.',
+                meta: 'Klikk «Se alle» for komplett aktivitetsliste'
+            },
+            'activity-1': {
+                title: 'Kartlegge konteringspraksis',
+                content: '<strong>Fase:</strong> 2 – Kartlegging<br><strong>Ansvarlig:</strong> Økonomiavdelingen<br><strong>Frist:</strong> 8. mars<br><br><strong>Beskrivelse:</strong> Gjennomføre intervjuer og observasjoner i alle enheter for å kartlegge hvordan kontering faktisk utføres i dag. Dokumentere variasjoner.',
+                meta: 'Status: 60% fullført • Leveranse: Kartleggingsrapport kontering'
+            },
+            'activity-2': {
+                title: 'Intervjuer innkjøpsprosess',
+                content: '<strong>Fase:</strong> 2 – Kartlegging<br><strong>Ansvarlig:</strong> Anskaffelsesenheten<br><strong>Frist:</strong> 10. mars<br><br><strong>Beskrivelse:</strong> Intervjue nøkkelbrukere i alle enheter om dagens innkjøps- og bestillingspraksis. Fokus på avvik fra standard prosedyre.',
+                meta: 'Status: 40% fullført • 6 av 15 intervjuer gjennomført'
+            },
+            'activity-3': {
+                title: 'Gap-analyse kontering',
+                content: '<strong>Fase:</strong> 2 – Kartlegging<br><strong>Ansvarlig:</strong> Prosessteam<br><strong>Frist:</strong> 10. mars<br><br><strong>Beskrivelse:</strong> Analysere gap mellom dagens konteringspraksis og fremtidig prosess. Vurdere endringsomfang per enhet.',
+                meta: 'Status: Ikke startet • Avhengig av kartleggingsaktiviteten'
+            },
+            'activity-4': {
+                title: 'Prioritere prosessområder',
+                content: '<strong>Fase:</strong> 2 – Kartlegging<br><strong>Ansvarlig:</strong> Prosjektleder<br><strong>Fullført:</strong> 20. februar<br><br><strong>Beskrivelse:</strong> Vurdere og prioritere hvilke prosessområder som skal kartlegges grundig basert på endringsomfang, kritikalitet og brukervolum.',
+                meta: '✓ Fullført • Leveranse: Prioritert prosessliste'
+            },
+            
+            // Risks
+            'risks': {
+                title: 'Risikoregister',
+                content: 'Viser åpne risikoer sortert etter risikoscore (sannsynlighet × konsekvens). Rød = høy risiko som krever tiltak, Gul = middels risiko som overvåkes.',
+                meta: 'Klikk «Risikoregister» for fullstendig oversikt med tiltak'
+            },
+            'risk-1': {
+                title: 'R-03: Ressurskapasitet test',
+                content: '<strong>Kategori:</strong> Ressurs<br><strong>Sannsynlighet:</strong> Høy<br><strong>Konsekvens:</strong> Høy<br><br><strong>Beskrivelse:</strong> Risiko for at nøkkelressurser fra linjen ikke har tilstrekkelig kapasitet til å delta i testfasen pga. ordinære arbeidsoppgaver.<br><br><strong>Tiltak:</strong> Tidlig avklaring med linjeledere, dedikere navngitte ressurser, vurdere innleie.',
+                meta: 'Risikoeier: Prosjektleder • Status: Under behandling'
+            },
+            'risk-2': {
+                title: 'R-05: Variasjon i praksis',
+                content: '<strong>Kategori:</strong> Organisatorisk<br><strong>Sannsynlighet:</strong> Middels<br><strong>Konsekvens:</strong> Høy<br><br><strong>Beskrivelse:</strong> Kartlegging kan avdekke større variasjoner i arbeidspraksis enn antatt, som krever mer omfattende endringsstøtte.<br><br><strong>Tiltak:</strong> Grundig kartlegging, tidlig involvering av enhetsledere, fleksibel opplæringsplan.',
+                meta: 'Risikoeier: Endringsleder • Status: Åpen'
+            },
+            'risk-3': {
+                title: 'R-07: Integrasjon mot HR-system',
+                content: '<strong>Kategori:</strong> Teknisk<br><strong>Sannsynlighet:</strong> Middels<br><strong>Konsekvens:</strong> Middels<br><br><strong>Beskrivelse:</strong> Usikkerhet rundt teknisk løsning for integrasjon mot eksisterende HR-system.<br><br><strong>Tiltak:</strong> Tidlig avklaring med leverandør, prototype i designfasen.',
+                meta: 'Risikoeier: IT-ansvarlig • Status: Åpen'
+            },
+            
+            // Deliverables
+            'deliverables': {
+                title: 'Leveransebibliotek',
+                content: 'Alle prosjektets leveranser samlet med metadata for fase, status, ansvarlig og godkjenner. Dokumenter lastes opp her når de er klare for review eller godkjenning.',
+                meta: 'Statusflyt: Under arbeid → Til review → Godkjent'
+            },
+            'deliverable-1': {
+                title: 'Prosjektplan',
+                content: '<strong>Fase:</strong> 1 – Forberedelse<br><strong>Type:</strong> Dokument<br><strong>Status:</strong> Godkjent<br><br><strong>Beskrivelse:</strong> Overordnet prosjektplan med faser, milepæler, aktiviteter, ressursbehov og risikovurdering.',
+                meta: 'Godkjent av styringsgruppe 31. januar'
+            },
+            'deliverable-2': {
+                title: 'Kartleggingsrapport kontering',
+                content: '<strong>Fase:</strong> 2 – Kartlegging<br><strong>Type:</strong> Dokument<br><strong>Status:</strong> Under arbeid<br><br><strong>Beskrivelse:</strong> Dokumentasjon av dagens konteringspraksis i alle enheter, identifiserte variasjoner, workarounds og årsaksforklaringer.',
+                meta: 'Ansvarlig: Økonomi • Frist: 8. mars'
+            },
+            'deliverable-3': {
+                title: 'Gap-analyse',
+                content: '<strong>Fase:</strong> 2 – Kartlegging<br><strong>Type:</strong> Dokument<br><strong>Status:</strong> Planlagt<br><br><strong>Beskrivelse:</strong> Analyse av gap mellom nåværende praksis og fremtidig prosess for alle prioriterte prosessområder. Inkluderer vurdering av endringsomfang per enhet.',
+                meta: 'Ansvarlig: Prosessteam • Frist: 15. mars'
+            },
+            
+            // Decisions
+            'decisions': {
+                title: 'Beslutningslogg',
+                content: 'Logg over alle formelle beslutninger i prosjektet med dato, beslutningsorgan og begrunnelse. Sikrer sporbarhet og felles forståelse.',
+                meta: 'Beslutningsorganer: Styringsgruppe, Prosjektleder, Prosesseier'
+            },
+            'decision-1': {
+                title: 'B-01: Go-live dato',
+                content: '<strong>Besluttet:</strong> 25. januar<br><strong>Besluttet av:</strong> Styringsgruppe<br><br><strong>Beslutning:</strong> Go-live settes til 1. november 2025.<br><br><strong>Begrunnelse:</strong> Gir tilstrekkelig tid til forberedelse og opplæring, unngår høysesong i desember.',
+                meta: 'Dokumentert i styringsgruppemøte #1'
+            },
+            'decision-2': {
+                title: 'B-04: Prioriterte prosessområder',
+                content: '<strong>Besluttet:</strong> 18. februar<br><strong>Besluttet av:</strong> Prosjektleder<br><br><strong>Beslutning:</strong> Følgende prosessområder prioriteres for grundig kartlegging: Kontering, Innkjøp/bestilling, Prosjektoppfølging.<br><br><strong>Begrunnelse:</strong> Basert på scoring av endringsomfang, kritikalitet og brukervolum.',
+                meta: 'Forankret med prosesseiere'
+            },
+            'decision-3': {
+                title: 'B-03: Endringsagenter',
+                content: '<strong>Besluttet:</strong> 15. februar<br><strong>Besluttet av:</strong> Prosjektleder i samråd med enhetsledere<br><br><strong>Beslutning:</strong> Én endringsagent per enhet identifisert og rekruttert. Totalt 8 endringsagenter.<br><br><strong>Begrunnelse:</strong> Sikre lokal forankring og støtte i endringsprosessen.',
+                meta: 'Liste over endringsagenter i ressursoversikt'
+            },
+            
+            // Processes
+            'processes': {
+                title: 'Prosessområder',
+                content: 'Dedikerte sider for hvert prioritert prosessområde. Inneholder all informasjon om prosessen: nåsituasjon, variasjoner, fremtidig prosess, gap-analyse og opplæringsmateriell.',
+                meta: 'Prioritet basert på endringsomfang og kritikalitet'
+            },
+            'process-1': {
+                title: 'Kontering',
+                content: '<strong>Prioritet:</strong> 1 (Høy)<br><strong>Status:</strong> Kartlegging pågår<br><br><strong>Innhold:</strong><ul><li>Prosesskart nåsituasjon</li><li>Variasjonskartlegging per enhet</li><li>Gap-analyse (kommer)</li><li>Fremtidig prosessbeskrivelse (kommer)</li></ul>',
+                meta: 'Høy variasjon identifisert • Krever differensiert opplæring'
+            },
+            'process-2': {
+                title: 'Innkjøp og bestilling',
+                content: '<strong>Prioritet:</strong> 1 (Høy)<br><strong>Status:</strong> Kartlegging pågår<br><br><strong>Innhold:</strong><ul><li>Prosesskart nåsituasjon</li><li>Variasjonskartlegging per enhet</li><li>Gap-analyse (kommer)</li><li>Fremtidig prosessbeskrivelse (kommer)</li></ul>',
+                meta: 'Fokus på fullmaktsstruktur og godkjenningsflyt'
+            },
+            'process-3': {
+                title: 'Prosjektoppfølging',
+                content: '<strong>Prioritet:</strong> 2 (Middels)<br><strong>Status:</strong> Ikke startet<br><br><strong>Innhold:</strong><ul><li>Prosesskart nåsituasjon (planlagt)</li><li>Variasjonskartlegging (planlagt)</li><li>Gap-analyse (planlagt)</li></ul>',
+                meta: 'Kartlegging starter uke 11'
+            },
+            
+            // Quick links
+            'link-maler': {
+                title: 'Maler og skjemaer',
+                content: 'Bibliotek med standardmaler for prosjektarbeidet:<ul><li>Kartleggingsmal</li><li>Intervjuguide</li><li>Gap-analyseskjema</li><li>Statusrapportmal</li><li>Møtereferat-mal</li></ul>',
+                meta: 'Oppdateres av prosjektledelsen'
+            },
+            'link-moter': {
+                title: 'Møter og referater',
+                content: 'Oversikt over alle prosjektmøter:<ul><li>Styringsgruppemøter</li><li>Prosjektgruppemøter</li><li>Prosessteammøter</li><li>Arbeidsmøter</li></ul>Inkluderer innkallinger, presentasjoner og referater.',
+                meta: 'Integrert med Outlook-kalender'
+            },
+            'link-kontakt': {
+                title: 'Prosjektteam',
+                content: 'Kontaktinformasjon og rollebeskrivelser:<ul><li>Prosjekteier</li><li>Prosjektleder</li><li>Prosesseiere</li><li>Teknisk team</li><li>Endringsagenter</li></ul>',
+                meta: 'Inkluderer org.kart og ansvarsmatrise'
+            },
+            'link-hjelp': {
+                title: 'Hjelp og veiledning',
+                content: 'Støtteressurser for prosjektdeltakere:<ul><li>Veiledning til SharePoint-området</li><li>Prosjektmetodikk</li><li>Mal-brukerveiledninger</li><li>FAQ</li></ul>',
+                meta: 'Kontakt prosjektleder ved spørsmål'
+            }
+        };
+        
+        // Tooltip functionality
+        const tooltip = document.getElementById('tooltip');
+        let tooltipTimeout;
+        
+        document.querySelectorAll('[data-tooltip]').forEach(element => {
+            element.addEventListener('mouseenter', (e) => {
+                const key = e.currentTarget.getAttribute('data-tooltip');
+                const data = tooltipData[key];
+                
+                if (data) {
+                    clearTimeout(tooltipTimeout);
+                    
+                    tooltip.querySelector('.tooltip-title').textContent = data.title;
+                    tooltip.querySelector('.tooltip-content').innerHTML = data.content;
+                    tooltip.querySelector('.tooltip-meta').textContent = data.meta || '';
+                    
+                    // Position tooltip
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    let left = rect.right + 16;
+                    let top = rect.top;
+                    
+                    // Check if tooltip would go off-screen right
+                    if (left + 350 > window.innerWidth) {
+                        left = rect.left - 366;
+                    }
+                    
+                    // Check if tooltip would go off-screen bottom
+                    if (top + 200 > window.innerHeight) {
+                        top = window.innerHeight - 220;
+                    }
+                    
+                    // Check if tooltip would go off-screen top
+                    if (top < 10) {
+                        top = 10;
+                    }
+                    
+                    tooltip.style.left = left + 'px';
+                    tooltip.style.top = top + 'px';
+                    tooltip.classList.add('visible');
+                }
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                tooltipTimeout = setTimeout(() => {
+                    tooltip.classList.remove('visible');
+                }, 100);
+            });
+        });
+        
+        // Keep tooltip visible when hovering over it
+        tooltip.addEventListener('mouseenter', () => {
+            clearTimeout(tooltipTimeout);
+        });
+        
+        tooltip.addEventListener('mouseleave', () => {
+            tooltip.classList.remove('visible');
+        });
+    </script>
+</body>
+</html>
