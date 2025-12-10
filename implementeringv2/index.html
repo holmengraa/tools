@@ -1,1 +1,128 @@
-c
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERP-implementering – SharePoint v2</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',sans-serif;background:#f3f2f1;color:#323130;font-size:14px;line-height:1.5}.sp-header{background:#0078d4;color:#fff;padding:12px 24px;display:flex;align-items:center;gap:20px}.sp-header-logo{font-size:16px;font-weight:600}.sp-nav{background:#fff;border-bottom:1px solid #edebe9;padding:0 24px;display:flex;gap:4px}.sp-nav-item{padding:14px 16px;cursor:pointer;color:#323130;text-decoration:none;border-bottom:2px solid transparent}.sp-nav-item:hover{background:#f3f2f1}.sp-nav-item.active{border-bottom-color:#0078d4;color:#0078d4}.sp-nav-item.highlight{background:#fff4ce;border-bottom-color:#8a6914;color:#8a6914;font-weight:600}.sp-content{max-width:1400px;margin:0 auto;padding:24px}.hero{background:linear-gradient(135deg,#0078d4,#005a9e);color:#fff;padding:40px;border-radius:8px;margin-bottom:24px;position:relative}.hero h1{font-size:28px;font-weight:600;margin-bottom:8px}.hero p{opacity:.9;font-size:16px}.hero-status{position:absolute;top:40px;right:40px;background:rgba(255,255,255,.2);padding:12px 20px;border-radius:6px;text-align:center}.principle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}.principle-box{background:linear-gradient(135deg,#fff9e6,#fff);border:2px solid #e8d9a0;border-radius:8px;padding:20px;cursor:pointer;transition:.2s}.principle-box:hover{border-color:#8a6914;box-shadow:0 4px 12px rgba(138,105,20,.15);transform:translateY(-2px)}.principle-icon{font-size:28px;margin-bottom:12px}.principle-title{font-size:15px;font-weight:600;color:#8a6914;margin-bottom:8px}.principle-desc{font-size:13px;color:#605e5c}.phase-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-bottom:24px}.phase-card{background:#fff;border-radius:8px;padding:20px 16px;text-align:center;cursor:pointer;transition:.2s;border:2px solid transparent;position:relative}.phase-card:hover{border-color:#0078d4;transform:translateY(-4px);box-shadow:0 8px 16px rgba(0,0,0,.1)}.phase-card.completed{border-left:4px solid #107c10}.phase-card.active{border-left:4px solid #0078d4;background:#f0f6ff}.phase-card.upcoming{border-left:4px solid #c8c6c4}.phase-card.phase-change{border:2px solid #8a6914;background:linear-gradient(180deg,#fffdf5,#fff)}.phase-card.phase-change .phase-number{background:#8a6914}.phase-badge{position:absolute;top:-8px;right:-8px;background:#8a6914;color:#fff;font-size:9px;padding:2px 6px;border-radius:8px;font-weight:600}.phase-number{width:32px;height:32px;border-radius:50%;background:#0078d4;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;margin:0 auto 12px;font-size:14px}.phase-card.completed .phase-number{background:#107c10}.phase-card.upcoming .phase-number{background:#c8c6c4}.phase-title{font-size:13px;font-weight:600;margin-bottom:4px}.phase-period{font-size:11px;color:#605e5c}.phase-status{margin-top:12px;font-size:11px;padding:4px 8px;border-radius:4px;display:inline-block}.phase-status.completed{background:#dff6dd;color:#107c10}.phase-status.active{background:#deecf9;color:#0078d4}.phase-status.upcoming{background:#f3f2f1;color:#605e5c}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:24px}.grid-3{grid-template-columns:repeat(3,1fr)}.card{background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.1);overflow:hidden;transition:.2s;cursor:pointer}.card:hover{box-shadow:0 4px 12px rgba(0,0,0,.15);transform:translateY(-2px)}.card.card-highlight{border:2px solid #8a6914;background:linear-gradient(180deg,#fffdf5,#fff)}.card.card-highlight .card-header{background:#fff4ce}.card-header{padding:16px 20px;border-bottom:1px solid #edebe9;display:flex;align-items:center;justify-content:space-between}.card-header h3{font-size:16px;font-weight:600}.card-header-badge{background:#8a6914;color:#fff;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:600}.list-item{padding:12px 16px;border-bottom:1px solid #edebe9;display:flex;align-items:center;gap:12px;cursor:pointer}.list-item:last-child{border-bottom:none}.list-item:hover{background:#f3f2f1}.list-item-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px}.list-item-content{flex:1}.list-item-title{font-weight:500}.list-item-meta{font-size:12px;color:#605e5c}.list-item-status{padding:4px 10px;border-radius:4px;font-size:12px;font-weight:500}.status-green{background:#dff6dd;color:#107c10}.status-blue{background:#deecf9;color:#0078d4}.status-yellow{background:#fff4ce;color:#8a6914}.status-red{background:#fde7e9;color:#d13438}.status-gray{background:#f3f2f1;color:#605e5c}.bg-blue{background:#deecf9;color:#0078d4}.bg-green{background:#dff6dd;color:#107c10}.bg-yellow{background:#fff4ce;color:#8a6914}.bg-red{background:#fde7e9;color:#d13438}.bg-orange{background:#fed9cc;color:#ca5010}.metrics-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}.metric-box{background:#fff;border-radius:8px;padding:20px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.1);cursor:pointer;transition:.2s}.metric-box:hover{box-shadow:0 4px 12px rgba(0,0,0,.1);transform:translateY(-2px)}.metric-box.metric-highlight{border:2px solid #8a6914;background:#fffdf5}.metric-value{font-size:28px;font-weight:700}.metric-label{font-size:12px;color:#605e5c;margin-top:4px}.metric-trend{font-size:11px;margin-top:8px;padding:2px 8px;border-radius:4px;display:inline-block}.quick-links{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.quick-link{background:#fff;border-radius:8px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid #edebe9}.quick-link:hover{border-color:#0078d4;background:#f0f6ff}.quick-link.quick-link-highlight{border:2px solid #8a6914;background:#fffdf5}.quick-link-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px}.quick-link-text{font-weight:500}.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.section-title{font-size:18px;font-weight:600}.section-title-badge{background:#8a6914;color:#fff;font-size:10px;padding:3px 8px;border-radius:10px;margin-left:10px;font-weight:600}.section-link{color:#0078d4;text-decoration:none;font-size:14px}.tooltip{position:fixed;background:#323130;color:#fff;padding:16px 20px;border-radius:8px;font-size:13px;max-width:380px;z-index:1000;pointer-events:none;opacity:0;transition:opacity .2s;box-shadow:0 8px 24px rgba(0,0,0,.3)}.tooltip.visible{opacity:1}.tooltip-title{font-weight:600;font-size:14px;margin-bottom:8px}.tooltip-content{line-height:1.6;color:#e1dfdd}.tooltip-content ul{margin:8px 0 0 16px}.tooltip-research{margin-top:10px;padding:10px;background:rgba(255,255,255,.1);border-radius:4px;font-size:11px;color:#c8c6c4}.tooltip-research strong{color:#fff4ce}.tooltip-meta{margin-top:12px;padding-top:12px;border-top:1px solid #605e5c;font-size:12px;color:#a19f9d}@media(max-width:1200px){.phase-grid{grid-template-columns:repeat(3,1fr)}.grid,.grid-3{grid-template-columns:1fr}.principle-grid{grid-template-columns:1fr}.metrics-bar{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header class="sp-header"><div class="sp-header-logo">☰ ERP-implementering</div></header>
+<nav class="sp-nav">
+<a class="sp-nav-item active" data-tooltip="nav-home">Hjem</a>
+<a class="sp-nav-item" data-tooltip="nav-styring">Prosjektstyring</a>
+<a class="sp-nav-item highlight" data-tooltip="nav-endring">Endringsledelse ▾</a>
+<a class="sp-nav-item" data-tooltip="nav-faser">Faser ▾</a>
+<a class="sp-nav-item" data-tooltip="nav-prosesser">Prosesser ▾</a>
+<a class="sp-nav-item" data-tooltip="nav-ressurser">Ressurser</a>
+</nav>
+<main class="sp-content">
+<section class="hero"><h1>ERP-implementering 2025</h1><p>Innføring av nye arbeidsprosesser • Fra kjent system til ny praksis</p><div class="hero-status"><div style="font-size:12px;opacity:.9">Prosjektstatus</div><div style="font-size:24px;font-weight:600">● Grønn</div></div></section>
+
+<div class="section-header"><h2 class="section-title">Sentrale prinsipper<span class="section-title-badge">FORSKNINGSBASERT</span></h2><a class="section-link">Les mer →</a></div>
+<div class="principle-grid">
+<div class="principle-box" data-tooltip="principle-unlearn"><div class="principle-icon">🔄</div><div class="principle-title">Støtt avlæring</div><div class="principle-desc">Gamle vaner må aktivt erstattes – ikke undertrykkes. Bygg ny praksis som positiv identitet.</div></div>
+<div class="principle-box" data-tooltip="principle-safety"><div class="principle-icon">🛡️</div><div class="principle-title">Psykologisk trygghet</div><div class="principle-desc">Trygghet til å feile er avgjørende – særlig for kompetente som må endre velfungerende rutiner.</div></div>
+<div class="principle-box" data-tooltip="principle-compliance"><div class="principle-icon">📊</div><div class="principle-title">Prosessetterlevelse</div><div class="principle-desc">Mål faktisk atferd over tid – ikke bare opplæring. Vaner etableres over 8–10 uker.</div></div>
+</div>
+
+<div class="section-header"><h2 class="section-title">Faser</h2></div>
+<div class="phase-grid">
+<div class="phase-card completed" data-tooltip="phase-1"><div class="phase-number">1</div><div class="phase-title">Forberedelse</div><div class="phase-period">Jan–Feb</div><div class="phase-status completed">✓ Fullført</div></div>
+<div class="phase-card active" data-tooltip="phase-2"><div class="phase-number">2</div><div class="phase-title">Kartlegging</div><div class="phase-period">Feb–Mar</div><div class="phase-status active">● Pågår</div></div>
+<div class="phase-card upcoming" data-tooltip="phase-3"><div class="phase-number">3</div><div class="phase-title">Design</div><div class="phase-period">Mar–Mai</div><div class="phase-status upcoming">○ Kommende</div></div>
+<div class="phase-card upcoming" data-tooltip="phase-4"><div class="phase-number">4</div><div class="phase-title">Test</div><div class="phase-period">Mai–Jul</div><div class="phase-status upcoming">○ Kommende</div></div>
+<div class="phase-card upcoming phase-change" data-tooltip="phase-5"><span class="phase-badge">ENDRING</span><div class="phase-number">5</div><div class="phase-title">Endringsstøtte</div><div class="phase-period">Aug–Okt</div><div class="phase-status upcoming">○ Kommende</div></div>
+<div class="phase-card upcoming phase-change" data-tooltip="phase-6"><span class="phase-badge">ETTERLEVELSE</span><div class="phase-number">6</div><div class="phase-title">Go-live & oppfølging</div><div class="phase-period">Nov–Des</div><div class="phase-status upcoming">○ Kommende</div></div>
+</div>
+
+<div class="section-header"><h2 class="section-title">Endringsledelse og prosessetterlevelse<span class="section-title-badge">KJERNEFOKUS</span></h2></div>
+<div class="grid">
+<div class="card card-highlight" data-tooltip="change-readiness">
+<div class="card-header"><h3>🎯 Endringsklarhet per enhet</h3><span class="card-header-badge">Kartlegging</span></div>
+<div class="card-body" style="padding:0">
+<div class="list-item" data-tooltip="unit-helse"><div class="list-item-icon bg-red">🏥</div><div class="list-item-content"><div class="list-item-title">Helse og omsorg</div><div class="list-item-meta">Stort gap • Mye avlæring nødvendig</div></div><div class="list-item-status status-red">Høy risiko</div></div>
+<div class="list-item" data-tooltip="unit-kultur"><div class="list-item-icon bg-yellow">🎭</div><div class="list-item-content"><div class="list-item-title">Kultur og samfunn</div><div class="list-item-meta">Ustrukturert praksis • Identitetsmotstand mulig</div></div><div class="list-item-status status-yellow">Middels</div></div>
+<div class="list-item" data-tooltip="unit-teknisk"><div class="list-item-icon bg-green">🔧</div><div class="list-item-content"><div class="list-item-title">Teknisk</div><div class="list-item-meta">God praksis • Kan være rollemodell</div></div><div class="list-item-status status-green">Lav risiko</div></div>
+</div></div>
+<div class="card card-highlight" data-tooltip="change-agents">
+<div class="card-header"><h3>👥 Endringsagentnettverk</h3></div>
+<div class="card-body" style="padding:0">
+<div class="list-item"><div class="list-item-icon bg-green">✓</div><div class="list-item-content"><div class="list-item-title">8 av 8 endringsagenter rekruttert</div><div class="list-item-meta">Valgt på tillit og innflytelse</div></div></div>
+<div class="list-item"><div class="list-item-icon bg-yellow">📅</div><div class="list-item-content"><div class="list-item-title">Opplæring i avlæring og støtte</div><div class="list-item-meta">Uke 32–33 • Før hovedopplæring</div></div><div class="list-item-status status-gray">Planlagt</div></div>
+<div class="list-item"><div class="list-item-icon bg-blue">📋</div><div class="list-item-content"><div class="list-item-title">Rolleavklaring pågår</div><div class="list-item-meta">Tid, mandat, linjeleder-støtte</div></div><div class="list-item-status status-blue">Pågår</div></div>
+</div></div>
+</div>
+
+<div class="section-header"><h2 class="section-title">Prosessetterlevelse – måling<span class="section-title-badge">KRITISK</span></h2></div>
+<div class="metrics-bar">
+<div class="metric-box metric-highlight" data-tooltip="metric-compliance"><div class="metric-value">—</div><div class="metric-label">Prosessetterlevelse</div><div class="metric-trend status-yellow">Måles fra nov</div></div>
+<div class="metric-box metric-highlight" data-tooltip="metric-reversion"><div class="metric-value">—</div><div class="metric-label">Tilbakefall gammel praksis</div><div class="metric-trend status-red">Kritisk KPI</div></div>
+<div class="metric-box" data-tooltip="metric-training"><div class="metric-value">—</div><div class="metric-label">Opplærte brukere</div><div class="metric-trend status-gray">Måles fra aug</div></div>
+<div class="metric-box" data-tooltip="metric-habit"><div class="metric-value">—</div><div class="metric-label">Uker siden go-live</div><div class="metric-trend status-yellow">Mål: 8–10 uker</div></div>
+</div>
+
+<div class="grid">
+<div class="card card-highlight">
+<div class="card-header"><h3>⚠️ Risikoer – endring og avlæring</h3></div>
+<div class="card-body" style="padding:0">
+<div class="list-item" data-tooltip="risk-habit"><div class="list-item-icon bg-red">🔄</div><div class="list-item-content"><div class="list-item-title">Tilbakefall til gammel praksis</div><div class="list-item-meta">Vaner reaktiveres under stress</div></div><div class="list-item-status status-red">Høy</div></div>
+<div class="list-item" data-tooltip="risk-identity"><div class="list-item-icon bg-red">🛡️</div><div class="list-item-content"><div class="list-item-title">Identitetsmotstand</div><div class="list-item-meta">Opplevd trussel mot faglig identitet</div></div><div class="list-item-status status-red">Høy</div></div>
+<div class="list-item" data-tooltip="risk-time"><div class="list-item-icon bg-yellow">⏱️</div><div class="list-item-content"><div class="list-item-title">For kort tid til vanetilpasning</div><div class="list-item-meta">8–10 uker nødvendig</div></div><div class="list-item-status status-yellow">Middels</div></div>
+<div class="list-item" data-tooltip="risk-rebound"><div class="list-item-icon bg-yellow">↩️</div><div class="list-item-content"><div class="list-item-title">Rebound-effekt</div><div class="list-item-meta">«Ikke gjør» forsterker gamle vaner</div></div><div class="list-item-status status-yellow">Middels</div></div>
+</div></div>
+<div class="card">
+<div class="card-header"><h3>📋 Aktiviteter – endringsfokus</h3></div>
+<div class="card-body" style="padding:0">
+<div class="list-item"><div class="list-item-icon bg-yellow">📊</div><div class="list-item-content"><div class="list-item-title">Vurdere endringsomfang per enhet</div><div class="list-item-meta">Grunnlag for differensiert støtte</div></div><div class="list-item-status status-blue">Pågår</div></div>
+<div class="list-item"><div class="list-item-icon bg-orange">⚠️</div><div class="list-item-content"><div class="list-item-title">Kartlegge potensiell motstand</div><div class="list-item-meta">Identitet, kompetanse, relasjoner</div></div><div class="list-item-status status-yellow">Ikke startet</div></div>
+<div class="list-item"><div class="list-item-icon bg-blue">🔍</div><div class="list-item-content"><div class="list-item-title">Dokumentere workarounds</div><div class="list-item-meta">Praksis som må avlæres</div></div><div class="list-item-status status-blue">Pågår</div></div>
+<div class="list-item"><div class="list-item-icon bg-green">👥</div><div class="list-item-content"><div class="list-item-title">Forberede endringsagenter</div><div class="list-item-meta">Opplæring i avlæring og støtte</div></div><div class="list-item-status status-gray">Planlagt</div></div>
+</div></div>
+</div>
+
+<div class="section-header"><h2 class="section-title">Prosessområder – avlæring</h2></div>
+<div class="grid grid-3">
+<div class="card"><div class="card-header"><h3>⚙️ Kontering</h3><span class="list-item-status status-red">Høy variasjon</span></div><div class="card-body"><p style="font-size:13px;color:#605e5c;margin-bottom:12px">Helse/Kultur trenger grunnopplæring FØR systemopplæring.</p><div style="font-size:12px"><strong>Avlæring:</strong> Fritekst, samlekontering, e-post</div></div></div>
+<div class="card"><div class="card-header"><h3>⚙️ Innkjøp</h3><span class="list-item-status status-yellow">Middels</span></div><div class="card-body"><p style="font-size:13px;color:#605e5c;margin-bottom:12px">Varierende fullmaktspraksis må standardiseres.</p><div style="font-size:12px"><strong>Avlæring:</strong> E-post-godkjenning</div></div></div>
+<div class="card"><div class="card-header"><h3>⚙️ Prosjekt</h3><span class="list-item-status status-gray">Kartlegges</span></div><div class="card-body"><p style="font-size:13px;color:#605e5c;margin-bottom:12px">Teknisk har god praksis. Andre varierer.</p><div style="font-size:12px"><strong>Avlæring:</strong> Excel ved siden av system</div></div></div>
+</div>
+
+<div class="section-header"><h2 class="section-title">Hurtiglenker</h2></div>
+<div class="quick-links">
+<div class="quick-link quick-link-highlight"><div class="quick-link-icon bg-yellow">📖</div><div class="quick-link-text">Endringshåndbok</div></div>
+<div class="quick-link quick-link-highlight"><div class="quick-link-icon bg-yellow">📚</div><div class="quick-link-text">Forskningsgrunnlag</div></div>
+<div class="quick-link"><div class="quick-link-icon bg-blue">📁</div><div class="quick-link-text">Kartleggingsmaler</div></div>
+<div class="quick-link"><div class="quick-link-icon bg-blue">👥</div><div class="quick-link-text">Prosjektteam</div></div>
+</div>
+</main>
+
+<div class="tooltip" id="tooltip"><div class="tooltip-title"></div><div class="tooltip-content"></div><div class="tooltip-research"></div><div class="tooltip-meta"></div></div>
+
+<script>
+const td={
+'nav-endring':{title:'Endringsledelse',content:'<strong>Dedikert område:</strong><ul><li>Endringsagentnettverk</li><li>Avlæringsstrategi</li><li>Motstandshåndtering</li><li>Prosessetterlevelse</li></ul>',research:'<strong>Forskning:</strong> Prosci, NeuroLeadership Institute, selvbestemmelsesteorien.',meta:'Kjernefokus'},
+'principle-unlearn':{title:'Støtt avlæring',content:'<strong>Kjernebudskap:</strong> Aktiv undertrykking av gamle vaner forsterker dem («rebound-effekt»). I stedet:<ul><li>Bygg nye vaner som positiv identitet</li><li>Gjør ny praksis enklere enn gammel</li><li>La ledere modellere ny atferd</li><li>Gi tid – avlæring tar lenger enn førstegangsopplæring</li></ul>',research:'<strong>Forskning:</strong> NeuroLeadership Institute (2024), Management Review Quarterly (2024).',meta:'Les mer i endringshåndboken'},
+'principle-safety':{title:'Psykologisk trygghet',content:'<strong>Kjernebudskap:</strong> Trygghet til å feile under omstilling øker adopsjonsrate. Særlig viktig når:<ul><li>Kompetente må endre velfungerende rutiner</li><li>Faglig identitet er knyttet til gammel praksis</li><li>Feil er synlige for andre</li></ul>',research:'<strong>Forskning:</strong> APA Work in America Survey (2024).',meta:'Tiltak i endringshåndboken'},
+'principle-compliance':{title:'Prosessetterlevelse',content:'<strong>Kjernebudskap:</strong> Det avgjørende er faktisk atferd – ikke gjennomført opplæring.<ul><li>Vaner etableres over 8–10 uker (median 59–66 dager)</li><li>Selvvalgte endringer har 37% høyere suksessrate</li><li>Tilbakefall skjer ofte under stress</li></ul>',research:'<strong>Forskning:</strong> Singh et al. (2024) meta-analyse.',meta:'KPI-er og målemetoder'},
+'phase-5':{title:'Fase 5: Endringsstøtte',content:'<strong>Kjernefase:</strong><ul><li>Differensiert opplæring basert på gap</li><li>Trene endringsagenter FØR hovedopplæring</li><li>Distribuert læring over tid</li><li>Fokus på identitetsbygging, ikke undertrykkelse</li></ul>',research:'<strong>Forskning:</strong> Endringsagenter velges på tillit, ikke teknisk kompetanse (Prosci 2024).',meta:'M6: Organisasjonen klar'},
+'phase-6':{title:'Fase 6: Go-live & oppfølging',content:'<strong>Fokus på varig endring:</strong><ul><li>Intensiv støtte første ukene</li><li>Overvåke prosessetterlevelse (ikke bare systembruk)</li><li>Identifisere tilbakefall til gammel praksis</li><li>Oppfølging minimum 8–10 uker</li></ul>',research:'<strong>Kritisk:</strong> Uten oppfølging vil mange vende tilbake til gamle mønstre.',meta:'M7, M8'},
+'unit-helse':{title:'Helse og omsorg',content:'<strong>Risiko:</strong> Høy<br><br><strong>Utfordringer:</strong><ul><li>Stort gap i konteringspraksis</li><li>Kompenserer med fritekst – må avlæres</li><li>Mange ansatte, spredt geografi</li></ul><br><strong>Tiltak:</strong> Grunnopplæring FØR systemopplæring.',meta:'Prioritet 1'},
+'risk-habit':{title:'Tilbakefall til gammel praksis',content:'<strong>Beskrivelse:</strong> Medarbeidere faller tilbake under stress.<br><br><strong>Tiltak:</strong><ul><li>Oppfølging 8–10 uker</li><li>Overvåke prosessetterlevelse</li><li>Gjøre gammel praksis vanskeligere</li></ul>',research:'<strong>Forskning:</strong> Gamle vaner reaktiveres under kognitiv belastning.',meta:'Høy sannsynlighet og konsekvens'},
+'risk-identity':{title:'Identitetsmotstand',content:'<strong>Beskrivelse:</strong> Faglig identitet oppleves truet.<br><br><strong>Tiltak:</strong><ul><li>Anerkjenne eksisterende kompetanse</li><li>Vise at fagkunnskap fortsatt er verdifull</li><li>Involvere erfarne i utforming</li></ul>',research:'<strong>Forskning:</strong> Cieslak & Valor (2024) – fire typer trussel.',meta:'Høy i enheter med erfarne'},
+'risk-rebound':{title:'Rebound-effekt',content:'<strong>Beskrivelse:</strong> Fokus på «ikke gjør» forsterker gammel vane paradoksalt.<br><br><strong>Tiltak:</strong><ul><li>Fokuser på HVA man skal gjøre</li><li>Bygg ny identitet</li><li>Unngå «slutt å»-kommunikasjon</li></ul>',research:'<strong>Forskning:</strong> NeuroLeadership Institute (2024).',meta:'Viktig for kommunikasjon'},
+'metric-compliance':{title:'Prosessetterlevelse',content:'<strong>Definisjon:</strong> Andel oppgaver utført i henhold til ny prosess.<br><br>Måler faktisk atferd – ikke selvrapportert. Hentes fra systemdata.',meta:'Måles fra november'},
+'metric-reversion':{title:'Tilbakefall',content:'<strong>Definisjon:</strong> Indikasjoner på retur til gammel praksis.<br><br><strong>Eksempler:</strong><ul><li>Økning i korrigeringer</li><li>Bruk av «avviklede» workarounds</li></ul>',research:'Tilbakefall skjer under stress. Krever rask respons.',meta:'Kritisk KPI'}
+};
+const tt=document.getElementById('tooltip');let tto;
+document.querySelectorAll('[data-tooltip]').forEach(el=>{
+el.addEventListener('mouseenter',e=>{const k=e.currentTarget.getAttribute('data-tooltip'),d=td[k];if(d){clearTimeout(tto);tt.querySelector('.tooltip-title').textContent=d.title;tt.querySelector('.tooltip-content').innerHTML=d.content;tt.querySelector('.tooltip-research').innerHTML=d.research||'';tt.querySelector('.tooltip-research').style.display=d.research?'block':'none';tt.querySelector('.tooltip-meta').textContent=d.meta||'';const r=e.currentTarget.getBoundingClientRect();let l=r.right+16,t=r.top;if(l+380>window.innerWidth)l=r.left-396;if(t+300>window.innerHeight)t=window.innerHeight-320;if(t<10)t=10;if(l<10)l=r.right+16;tt.style.left=l+'px';tt.style.top=t+'px';tt.classList.add('visible')}});
+el.addEventListener('mouseleave',()=>{tto=setTimeout(()=>tt.classList.remove('visible'),100)});
+});
+tt.addEventListener('mouseenter',()=>clearTimeout(tto));
+tt.addEventListener('mouseleave',()=>tt.classList.remove('visible'));
+</script>
+</body>
+</html>
